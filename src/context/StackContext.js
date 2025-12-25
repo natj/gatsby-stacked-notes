@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
+import { withPrefix } from 'gatsby'; 
 
 const StackContext = createContext();
 export const NoteIndexContext = createContext(-1);
@@ -12,12 +13,32 @@ export const StackProvider = ({ children }) => {
     sourceIndexRef.current = index;
   };
 
-  const updateStack = (path, pageComponent) => {
-    // --- GUARD CLAUSE ---
-    // We block updates to prevent React Strict Mode from double-firing.
-    // BUT: We must allow the update if 'sourceIndexRef' is set.
-    // This handles the specific case: [A, B, C] -> Click 'C' from 'A'.
-    // The path is already 'C', but we MUST process the cut.
+  const updateStack = (rawPath, pageComponent) => {
+    // --- 1. CLEAN THE PATH (The Fix) ---
+    // Gatsby sends us the full path (e.g., "/my-garden/note").
+    // We must strip the prefix so we store just "/note".
+    let path = rawPath;
+    const prefix = withPrefix('/');
+
+    // Only strip if a prefix actually exists (and isn't just root "/")
+    if (prefix !== '/') {
+      if (path.startsWith(prefix)) {
+        // Slice off the prefix (e.g. "/garden/")
+        // If prefix is "/garden/" and path is "/garden/note", we get "note".
+        path = path.slice(prefix.length);
+        
+        // Ensure it starts with a slash
+        if (!path.startsWith('/')) {
+          path = '/' + path;
+        }
+      } 
+      // Handle edge case: visiting the root "/garden" without trailing slash
+      else if (path === prefix.slice(0, -1)) {
+        path = "/";
+      }
+    }
+    
+    // --- 2. GUARD CLAUSE (Strict Mode Fix) ---
     const isSamePath = path === currentPathRef.current;
     const isExplicitClick = sourceIndexRef.current !== null;
 
@@ -26,29 +47,20 @@ export const StackProvider = ({ children }) => {
     }
     
     currentPathRef.current = path;
-    
-    // Capture and reset source index
     const sourceIndex = sourceIndexRef.current;
     sourceIndexRef.current = null;
 
     setStack((prevStack) => {
-      // SCENARIO 1: BRANCHING (User clicked a link explicitly)
-      // We prioritize this over everything else. 
-      // If we clicked from Note #0, we cut everything after #0, then add the new note.
+      // SCENARIO 1: BRANCHING
       if (sourceIndex !== null) {
         const newStack = prevStack.slice(0, sourceIndex + 1);
         return [...newStack, { path, component: pageComponent }];
       }
 
       // SCENARIO 2: HISTORY / BACK BUTTON
-      // Find the last occurrence of this note to determine where to cut.
-      // We use [...arr].reverse() to find the LAST index (like lastIndexOf).
       const reversedIndex = [...prevStack].reverse().findIndex(item => item.path === path);
-      
       if (reversedIndex !== -1) {
-        // Calculate true index from the start
         const existingIndex = prevStack.length - 1 - reversedIndex;
-        // Focus on that note (remove everything to the right)
         return prevStack.slice(0, existingIndex + 1);
       }
 
