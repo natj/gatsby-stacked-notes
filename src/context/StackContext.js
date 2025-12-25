@@ -5,29 +5,26 @@ const StackContext = createContext();
 export const StackProvider = ({ children }) => {
   const [stack, setStack] = useState([]);
 
-  // Initialize stack with current URL on load
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Default to home "/" if path is empty
-      const current = window.location.pathname === '/' ? '/home' : window.location.pathname;
-      setStack([current]);
-    }
-  }, []);
+  // This function is called by Layout whenever Gatsby navigates to a new page
+  const updateStack = (path, pageComponent) => {
+    setStack((prevStack) => {
+      // 1. Check if this page is already active
+      const existingIndex = prevStack.findIndex(item => item.path === path);
+      
+      if (existingIndex !== -1) {
+        // If clicking a link to a page already open on the left, 
+        // cut the stack to show that page as the active "end"
+        return prevStack.slice(0, existingIndex + 1);
+      }
 
-  const openNote = (slug) => {
-    // If user clicks a note already in stack, close everything to its right
-    // If new, append to end
-    setStack((prev) => {
-      const index = prev.indexOf(slug);
-      return index !== -1 ? prev.slice(0, index + 1) : [...prev, slug];
+      // 2. If it's a new page, add it to the end
+      // (Optional: Limit stack size to 5 to prevent memory leaks)
+      return [...prevStack, { path, component: pageComponent }];
     });
-    
-    // Update browser URL without reload
-    window.history.pushState({}, '', slug);
   };
 
   return (
-    <StackContext.Provider value={{ stack, openNote }}>
+    <StackContext.Provider value={{ stack, updateStack }}>
       {children}
     </StackContext.Provider>
   );
