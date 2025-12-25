@@ -8,7 +8,7 @@ const NOTE_WIDTH = '576px'; // 576px is standard Tailwind 'max-w-xl'
 
 const NoteCard = ({ children, index, title, slug, obstructed }) => (
   <div 
-    className="flex-shrink-0 bg-white border-r border-gray-200 shadow-xl h-full transition-transform duration-300"
+    className="flex-shrink-0 bg-white border-r border-gray-200 shadow-xl h-full transition-transform duration-300 overflow-y-auto"
     style={{
       width: NOTE_WIDTH,
       position: 'sticky',
@@ -39,7 +39,7 @@ const NoteCard = ({ children, index, title, slug, obstructed }) => (
         - When 'obstructed' is true, this content is simply covered 
           by the white background of the NEXT note in the stack.
     */}
-    <div className="p-12 min-h-screen bg-white">
+    <div className="p-12">
       <div className="prose prose-lg text-gray-700 max-w-none">
         <MDXProvider components={{ a: MdxLink }}>
           {children}
@@ -64,7 +64,7 @@ export default function GardenInterface() {
   const { stack } = useStack();
 
   return (
-    <div className="flex flex-row h-screen w-full overflow-x-auto bg-gray-100 items-start">
+    <div className="flex flex-row h-screen w-full overflow-x-auto bg-gray-100">
       {stack.map((item, index) => {
         const isObstructed = index < stack.length - 1;
         
