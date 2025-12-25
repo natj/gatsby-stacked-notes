@@ -10,3 +10,67 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+body {
+  height: 100vh;
+}
+
+h1 {
+  @apply text-3xl font-bold;
+}
+h2 {
+  @apply text-xl font-bold;
+}
+h3 {
+  @apply font-bold;
+}
+a {
+  @apply underline;
+}
+a:hover {
+  @apply text-blue-700 no-underline;
+}
+p {
+  @apply mb-4;
+}
+
+ul {
+  @apply list-disc pl-6;
+}
+
+ol {
+  @apply list-decimal pl-6;
+}
+
+hr {
+  @apply my-4;
+}
+
+.refs-box a {
+  @apply text-gray-600;
+}
+
+blockquote {
+  @apply py-1 px-4 mb-4 border-l-2 border-blue-500;
+}
+blockquote p {
+  @apply m-0 font-serif text-xl;
+}
+
+code {
+  @apply text-sm text-orange-800 bg-orange-100 px-1 -mx-1 rounded;
+}
+
+pre {
+  @apply mb-4 p-2 rounded bg-gray-100;
+  overflow-x: auto;
+}
+
+pre > code {
+  @apply p-0 m-0 mb-2 bg-transparent;
+}
+
+.highlight {
+  @apply bg-yellow-200 px-1 -mx-1 rounded;
+}
+
