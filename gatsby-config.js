@@ -1,10 +1,15 @@
+const wikiLinkPlugin = require("remark-wiki-link").wikiLinkPlugin;
+const slugify = require("slugify");
+
 module.exports = {
   siteMetadata: {
     title: "My Modern Garden",
   },
+  // We need to define the path prefix if you are deploying to GitHub Pages
+  // pathPrefix: "/your-repo-name", 
   plugins: [
     `gatsby-plugin-postcss`,
-    `gatsby-plugin-layout`, // Persists state across navigation
+    `gatsby-plugin-layout`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -12,6 +17,28 @@ module.exports = {
         path: `${__dirname}/content`,
       },
     },
-    `gatsby-plugin-mdx`,
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        // This is the Modern MDX v2 configuration
+        mdxOptions: {
+          remarkPlugins: [
+            [
+              wikiLinkPlugin,
+              {
+                // 1. How to turn [[Title]] into a slug? (e.g. [[My Note]] -> my-note)
+                pageResolver: (name) => [slugify(name, { lower: true, strict: true })],
+                
+                // 2. How to build the final URL? (e.g. /my-note)
+                hrefTemplate: (permalink) => `/${permalink}`,
+
+                // 3. (Optional) Class for styling the links
+                wikiLinkClassName: "internal-link",
+              },
+            ],
+          ],
+        },
+      },
+    },
   ],
 };
