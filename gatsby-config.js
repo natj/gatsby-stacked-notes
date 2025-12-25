@@ -20,7 +20,7 @@ module.exports = {
     {
       resolve: `gatsby-plugin-mdx`,
       options: {
-        // This is the Modern MDX v2 configuration
+        extensions: [`.mdx`, `.md`],
         mdxOptions: {
           remarkPlugins: [
             [
