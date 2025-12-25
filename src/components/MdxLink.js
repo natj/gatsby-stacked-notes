@@ -1,16 +1,24 @@
 import React from 'react';
 import { Link } from 'gatsby';
+import { useStack, useNoteIndex } from '../context/StackContext';
 
 const MdxLink = ({ href, children }) => {
-  // 1. Check if the link is internal (starts with / or .)
+  const { setSourceIndex } = useStack();
+  const myIndex = useNoteIndex(); // Get the index of the note this link lives in
+  
   const isInternal = href && (href.startsWith('/') || href.startsWith('.'));
 
   if (isInternal) {
-    // 2. Use Gatsby's Link component. 
-    // This changes the URL -> The Layout detects it -> The Stack updates.
     return (
       <Link
         to={href}
+        onClick={() => {
+          // KEY MOMENT: logic to handle the "Branching"
+          // "I am clicking from stack item #2, so delete everything after #2"
+          if (myIndex !== -1) {
+            setSourceIndex(myIndex);
+          }
+        }}
         className="text-blue-600 hover:text-blue-800 font-medium underline cursor-pointer"
       >
         {children}
@@ -18,14 +26,8 @@ const MdxLink = ({ href, children }) => {
     );
   }
 
-  // 3. Handle external links (open in new tab)
   return (
-    <a 
-      href={href} 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      className="text-gray-500 hover:text-gray-700 transition-colors"
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700">
       {children}
     </a>
   );

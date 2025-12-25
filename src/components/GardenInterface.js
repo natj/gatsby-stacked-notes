@@ -1,7 +1,11 @@
 import React from 'react';
-import { useStack } from '../context/StackContext';
+import { useStack, NoteIndexContext } from '../context/StackContext'; 
 import { MDXProvider } from "@mdx-js/react";
 import MdxLink from './MdxLink';
+
+
+
+
 
 // The container for a single note
 const NoteCard = ({ children, index, title }) => (
@@ -24,18 +28,22 @@ const NoteCard = ({ children, index, title }) => (
   </div>
 );
 
+
+
 export default function GardenInterface() {
   const { stack } = useStack();
 
   return (
     <div className="flex flex-row h-screen w-full overflow-x-auto bg-gray-100 items-start">
       {stack.map((item, index) => (
-        <NoteCard key={item.path} index={index} title={item.path}>
-          {item.component}
-        </NoteCard>
+        // WRAP EACH CARD IN THE CONTEXT PROVIDER
+        <NoteIndexContext.Provider value={index} key={item.path}>
+          <NoteCard index={index} title={item.path}>
+            {item.component}
+          </NoteCard>
+        </NoteIndexContext.Provider>
       ))}
       
-      {/* Spacer to allow scrolling past the last card */}
       <div className="flex-shrink-0 w-96" />
     </div>
   );
