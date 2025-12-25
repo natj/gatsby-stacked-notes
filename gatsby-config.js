@@ -2,7 +2,7 @@ const wikiLinkPlugin = require("remark-wiki-link").wikiLinkPlugin;
 const slugify = require("slugify");
 
 module.exports = {
-  pathPrefix: "/astro-curriculum",
+  pathPrefix: "/home/jnattila/astro-curriculum",
   siteMetadata: {
     title: "My Modern Garden",
   },
