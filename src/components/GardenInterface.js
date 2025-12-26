@@ -49,7 +49,6 @@ const NoteCard = ({ children, index, title, slug, obstructed }) => (
     
     {/* 3. CLICK OVERLAY 
         - Allows clicking the spine to focus the note 
-    */}
     {obstructed && (
       <Link 
         to={slug}
@@ -57,6 +56,8 @@ const NoteCard = ({ children, index, title, slug, obstructed }) => (
         aria-label={`Focus on ${title}`}
       />
     )}
+    */}
+
   </div>
 );
 
