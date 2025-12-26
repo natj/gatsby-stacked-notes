@@ -135,8 +135,8 @@ body {
 /* --- RESTORED LIST STYLES HERE --- */
 .prose ul {
   list-style-type: disc;
-  padding-left: 1.5rem; /* ~24px indent */
-  margin-bottom: 0rem;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .prose ol {
@@ -146,7 +146,8 @@ body {
 }
 
 .prose li {
-  margin-bottom: 0.25rem;
+  margin-bottom: 0; 
+  line-height: 1.5; 
 }
 
 /* --- COMPONENT: Backlinks Footer --- */
