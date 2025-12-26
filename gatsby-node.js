@@ -1,5 +1,66 @@
 const slugify = require("slugify");
 const path = require("path");
+const makeSlug = require("./utils/slugify"); // <--- Import shared function
+
+
+
+// : Create the 'backlinks' field
+exports.createResolvers = ({ createResolvers }) => {
+  const resolvers = {
+    Mdx: {
+      backlinks: {
+        type: ["Mdx"],
+        resolve: async (source, args, context, info) => {
+          const allNotes = await context.nodeModel.findAll({ type: "Mdx" });
+          
+          // 1. Get the current note's slug base
+          // e.g. "/notes/My-Note" -> "my-note" (assuming strict/lower happened on file creation)
+          const mySlugBase = source.fields.slug.replace(/^\/|\/$/g, '').split('/').pop();
+
+          console.log(`-----generating backlinks for ${mySlugBase}`);
+
+          return allNotes.entries.filter((note) => {
+            if (note.id === source.id) return false;
+
+            console.log(`Checking if ${note.fields.slug} links to me...`);
+
+            // 2. Scan for [[Wiki Links]]
+            const wikiMatches = [...note.body.matchAll(/\[\[(.*?)\]\]/g)];
+
+            for (const match of wikiMatches) {
+              let linkText = match[1]; // "My Note" or "My Note|Label"
+
+              // Remove styling pipe if present
+              if (linkText.includes('|')) {
+                linkText = linkText.split('|')[0];
+              }
+
+              // 3. USE SHARED SLUGIFY 
+              // This turns "My Note" -> "my-note" using the exact rules from gatsby-config
+              const candidateSlug = makeSlug(linkText);
+
+              console.log(` comparing links ${candidateSlug} to ${mySlugBase}`);
+
+              if (candidateSlug === mySlugBase) {
+                return true;
+              }
+            }
+            
+            // (Optional) Keep the standard markdown check if needed
+            if (note.body.includes(`](${source.fields.slug})`)) {
+               return true;
+            }
+
+            return false;
+          });
+        },
+      },
+    },
+  };
+  createResolvers(resolvers);
+};
+
+
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
@@ -31,3 +92,8 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     });
   }
 };
+
+
+
+
+

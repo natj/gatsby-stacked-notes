@@ -1,5 +1,6 @@
 const wikiLinkPlugin = require("remark-wiki-link").wikiLinkPlugin;
-const slugify = require("slugify");
+const makeSlug = require("./utils/slugify"); // <--- Import shared function
+
 
 module.exports = {
   pathPrefix: "/home/jnattila/astro-curriculum",
@@ -27,13 +28,9 @@ module.exports = {
             [
               wikiLinkPlugin,
               {
-                // 1. How to turn [[Title]] into a slug? (e.g. [[My Note]] -> my-note)
-                pageResolver: (name) => [slugify(name, { lower: true, strict: true })],
-                
-                // 2. How to build the final URL? (e.g. /my-note)
+                // USE THE SHARED FUNCTION HERE
+                pageResolver: (name) => [makeSlug(name)],
                 hrefTemplate: (permalink) => `/${permalink}`,
-
-                // 3. (Optional) Class for styling the links
                 wikiLinkClassName: "internal-link",
               },
             ],
