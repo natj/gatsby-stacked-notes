@@ -29,13 +29,15 @@ const NoteCard = ({ children, index, title, slug, isStacked }) => (
       </div>
     </div>
     
-    {/* 3. CLICK OVERLAY */}
+    {/* 3. CLICK OVERLAY 
     {isStacked && (
       <Link 
         to={slug}
         className="absolute inset-0 z-30 cursor-pointer"
         aria-label={`Focus on ${title}`}
       />
+    */}
+
     )}
   </div>
 );
