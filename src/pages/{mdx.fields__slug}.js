@@ -7,46 +7,39 @@ export default function NotePage({ data, children }) {
   const { backlinks } = data.mdx;
 
   return (
-    <div className="prose lg:prose-xl">
-
+    <div>
+      {/* 1. Header & Body */}
       <h1>{data.mdx.frontmatter.title}</h1>
 
       <MDXProvider components={{ a: MdxLink }}>
         {children}
       </MDXProvider>
 
-
-      {/* 2. BACKLINKS SECTION (Automatic) */}
+      {/* 2. BACKLINKS FOOTER */}
       {backlinks && backlinks.length > 0 && (
-        <div className="mt-12 pt-6 border-t border-gray-200 bg-gray-50 -mx-6 px-6 pb-6">
-          <h3 className="text-lg font-bold text-gray-500 mb-3 uppercase tracking-wider text-sm">
-            Linked to by
+        <div className="references-block">
+          <h3 className="references-title">
+            Referred in
           </h3>
-          <ul className="space-y-2">
+          <div>
             {backlinks.map((ref) => (
-              <li key={ref.id}>
-                <MdxLink href={ref.fields.slug}>
-                  <div className="text-blue-600 hover:underline font-medium">
-                    {ref.frontmatter.title || ref.fields.slug}
-                  </div>
-                  {/* Optional: Show a preview snippet of the backlink body */}
-                  <p className="text-xs text-gray-500 truncate">
-                    {ref.excerpt}
-                  </p>
-                </MdxLink>
-              </li>
+              <MdxLink href={ref.fields.slug} key={ref.id} className="reference-link">
+                <div className="ref-title">
+                  {ref.frontmatter.title || ref.fields.slug}
+                </div>
+                <p className="ref-excerpt">
+                  {ref.excerpt}
+                </p>
+              </MdxLink>
             ))}
-          </ul>
+          </div>
+          {/* Optional: Add the "Direct Message" text from the old theme here if you want */}
         </div>
       )}
-
-
     </div>
   );
 }
 
-
-// Update the Query to fetch backlinks
 export const query = graphql`
   query($id: String!) {
     mdx(id: { eq: $id }) {
@@ -56,10 +49,9 @@ export const query = graphql`
       fields {
         slug
       }
-      # Fetch the backlinks we resolved in gatsby-node
       backlinks {
         id
-        excerpt(pruneLength: 50)
+        excerpt(pruneLength: 80) # Increased length for better preview
         frontmatter {
           title
         }
