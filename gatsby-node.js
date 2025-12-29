@@ -22,7 +22,14 @@ exports.createResolvers = ({ createResolvers }) => {
           return allNotes.entries.filter((note) => {
             if (note.id === source.id) return false;
 
-            console.log(`Checking if ${note.fields.slug} links to me...`);
+            // We check the file path. If it contains "partials", we skip it.
+            // Note: In Gatsby 5, path info is often in 'internal.contentFilePath'
+            const filePath = note.internal.contentFilePath || "";
+            if (filePath.includes("src/components/partials")) {
+              return false;
+            }
+
+            //console.log(`Checking if ${note.fields.slug} links to me...`);
 
             // 2. Scan for [[Wiki Links]]
             const wikiMatches = [...note.body.matchAll(/\[\[(.*?)\]\]/g)];
@@ -39,7 +46,7 @@ exports.createResolvers = ({ createResolvers }) => {
               // This turns "My Note" -> "my-note" using the exact rules from gatsby-config
               const candidateSlug = makeSlug(linkText);
 
-              console.log(` comparing links ${candidateSlug} to ${mySlugBase}`);
+              //console.log(` comparing links ${candidateSlug} to ${mySlugBase}`);
 
               if (candidateSlug === mySlugBase) {
                 return true;
@@ -95,5 +102,18 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 
 
 
-
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions;
+  const typeDefs = `
+    type Mdx implements Node {
+      frontmatter: MdxFrontmatter
+    }
+    type MdxFrontmatter {
+      hideHeader: Boolean
+      hideFooter: Boolean
+      title: String
+    }
+  `;
+  createTypes(typeDefs);
+};
 

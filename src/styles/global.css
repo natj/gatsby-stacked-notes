@@ -194,3 +194,38 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+
+.note-header-area {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--color-gray);
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+}
+
+/* Make lists in the header horizontal/compact if you use them */
+.note-header-area ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.note-header-area p {
+  margin-bottom: 0;
+}
+
+.note-footer-area {
+  margin-top: 3rem;
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+}
+
+/* Remove default prose spacing for these areas so they look compact */
+.note-header-area a, .note-footer-area a {
+  color: var(--color-text-light);
+  text-decoration: underline;
+}
+
+.note-header-area a:hover, .note-footer-area a:hover {
+  color: var(--color-primary);
+}
