@@ -8,7 +8,6 @@ const NoteCard = ({ children, index, title, slug, isStacked }) => (
   <div 
     className="note-card"
     style={{
-      // We still need inline styles for dynamic positioning
       left: index * 40, 
       zIndex: index, 
     }}
@@ -29,16 +28,6 @@ const NoteCard = ({ children, index, title, slug, isStacked }) => (
       </div>
     </div>
     
-    {/* 3. CLICK OVERLAY 
-    {isStacked && (
-      <Link 
-        to={slug}
-        className="absolute inset-0 z-30 cursor-pointer"
-        aria-label={`Focus on ${title}`}
-      />
-    */}
-
-    )}
   </div>
 );
 
