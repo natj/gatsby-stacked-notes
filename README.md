@@ -51,10 +51,14 @@ Ensure your package.json includes these core libraries:
 ### 4. Running Locally
 
 ```Bash
+npm run clean
 npm run develop
 ```
 
-Access the site at `http://localhost:8000´.
+Access the site at `http://localhost:8000`. Alternatively, you can build and serve with `npm run build` && `npm run serve`.
+
+
+
 
 ### File Structure & Description
 Here is a breakdown of the core files that make the "Garden" logic work.
@@ -137,4 +141,13 @@ You must include the flag when building.
 
 npm run build -- --prefix-paths
 ```
+
+# TODO
+
+- fix erraneous ")}" at the end of each note
+- dark mode with a toggle
+- optional header and footer
+- mobile mode with no stacking
+- fix browser back button behavior
+
 

@@ -1,5 +1,9 @@
 ---
-title: Joonas Nättilä
+title: Joonas Nättilä 
 ---
 
-Associate professor of astrophysics.
+Associate Professor of Plasma Astrophysics
+
+- email: joonas.nattila@helsinki.fi
+- website: https://natj.github.io/
+

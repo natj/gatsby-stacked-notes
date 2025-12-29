@@ -1,33 +1,39 @@
 ---
-title: Tähtien rakenne ja kehitys (TRaK)
+title: Tähtien rakenne ja kehitys (FYS2054)
 ---
 
-Basic course introducing the physical laws controlling the stellar structure and evolution.
+Physical laws controlling stellar structure, energy production, and evolutionary tracks.
 
-- **Period** III-IV, BSc year 2-3 
-- **Content**: 12 lectures, 5 exercises, 1 computer exercise, exam 
-- **Themes**: Theory 60% / methods 20% / observations 10% / phenomena 10% 
-- **Teachers**: [[Joonas Nättilä]], Thomas Hackman 
+- **Period**: 3, 4
+- **Content**: 13 lectures, 5 exercises, 1 computer exercise, exam
+- **Themes**: Theory 60%, Methods 20%, Observations 10%, Phenomena 10%
+- **Teachers**: [[Thomas Hackman]], [[Joonas Nättilä]]
 
 ---
 ## Content
 
-- Stellar structure equations 
-- Diffusion equation 
-- Convection 
-- Rosseland mean opacity 
-- Ideal gas 
-- Radiation pressure 
-- Blackbody radiation 
-- Degenerate electron gas 
-- Saha equation 
-- Nuclear reactions 
-- Stellar classification 
-- Stellar evolution
-
+- Stellar structure equations
+- Diffusion equation
+- Convection (Ledoux and Schwarzschild criterion)
+- Rosseland mean opacity
+- Ideal gas
+- Radiation pressure
+- Blackbody radiation
+- Degenerate electron gas
+- Saha equation
+- Nuclear reactions (formation of elements)
+- Stellar classification
+- Star formation
+- Jeans mass
+- Stellar evolutionary tracks (protostar, pre-main sequence, main sequence, post-main sequence)
+- Compact stars (white dwarfs, Chandrasekhar mass, neutron stars, Tolman-Oppenheimer-Volkoff limit, black holes)
+- Planetary nebulae
+- Supernova
 
 ---
 ## Pre-requisites
 
-- [[Termofysiikan perusteet]] 
-- [[Termodynaamiset potentiaalit]] 
+- [[Tähtitieteen perusteet I]]
+- [[Tähtitieteen perusteet II]]
+- [[Termofysiikan perusteet]]
+
