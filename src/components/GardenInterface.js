@@ -4,6 +4,8 @@ import { MDXProvider } from "@mdx-js/react";
 import MdxLink from './MdxLink';
 import { Link } from 'gatsby';
 import useWindowWidth from '../hooks/useWindowWidth'; // <--- Import the hook
+import ThemeToggle from './ThemeToggle'; // <--- IMPORT BUTTON
+
 
 const NoteCard = ({ children, index, title, slug, isStacked, isMobile }) => (
   <div 
@@ -39,35 +41,32 @@ const NoteCard = ({ children, index, title, slug, isStacked, isMobile }) => (
   </div>
 );
 
+
 export default function GardenInterface() {
   const { stack } = useStack();
   const width = useWindowWidth();
-  
-  // Mobile Breakpoint (768px is standard iPad portrait / large phone)
   const isMobile = width <= 768;
 
   if (!stack || stack.length === 0) return null;
 
-  // RENDER LOGIC:
-  // Mobile: Show ONLY the last item (the active note)
-  // Desktop: Show the whole list
-  
-  const notesToShow = isMobile 
-    ? [stack[stack.length - 1]] // Array with just the last item
-    : stack;
+  const notesToShow = isMobile ? [stack[stack.length - 1]] : stack;
 
   return (
-    <div className="garden-layout">
+    <div className="garden-layout relative"> {/* Added relative for positioning context if needed */}
+      
+      {/* TOGGLE BUTTON */}
+      <ThemeToggle />
+
       {notesToShow.map((item, i) => {
-        // On mobile, index is always 0. On desktop, it matches the stack index.
+        // ... (existing mapping logic) ...
         const realIndex = isMobile ? stack.length - 1 : i;
-        
         const isStacked = !isMobile && realIndex < stack.length - 1;
         const cleanTitle = item.path === '/' ? 'Home' : item.path.replace(/^\//, '').replace(/-/g, ' ');
 
         return (
           <NoteIndexContext.Provider value={realIndex} key={item.path}>
-            <NoteCard 
+             {/* ... NoteCard implementation ... */}
+             <NoteCard 
               index={realIndex} 
               title={cleanTitle} 
               slug={item.path}
@@ -80,8 +79,8 @@ export default function GardenInterface() {
         );
       })}
       
-      {/* Spacer for scrolling past the last card (Desktop only) */}
       {!isMobile && <div className="flex-shrink-0 w-96" />}
     </div>
   );
 }
+

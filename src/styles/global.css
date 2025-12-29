@@ -3,22 +3,37 @@
 @tailwind utilities;
 
 :root {
+  /* LIGHT MODE (Default) */
   --color-text: #333333;
   --color-text-light: #718096;
   --color-background: #ffffff;
   --color-primary: #3182ce;
   --color-gray: #dadada;
   --color-accent: #fafafc;
+  --color-layout-bg: #f0f0f0; /* The scroll track background */
   
   --spine-width: 40px;
   --note-width: 576px;
 }
 
+/* DARK MODE OVERRIDES */
+[data-theme="dark"] {
+  --color-text: #e2e8f0;       /* Light gray text */
+  --color-text-light: #a0aec0; /* Dimmer text */
+  --color-background: #1a202c; /* Dark gray/blue (Tailwind gray-900) */
+  --color-primary: #63b3ed;    /* Lighter blue for readability */
+  --color-gray: #2d3748;       /* Darker borders */
+  --color-accent: #2d3748;     /* Dark accent for footer */
+  --color-layout-bg: #111827;  /* Very dark background for layout */
+}
+
 body {
   height: 100vh;
   color: var(--color-text);
+  background-color: var(--color-layout-bg);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* --- COMPONENT: Layout Wrapper --- */
@@ -28,9 +43,11 @@ body {
   height: 100vh;
   width: 100%;
   overflow-x: auto;
-  background-color: #f0f0f0;
+  background-color: var(--color-layout-bg); 
   align-items: stretch;
+  transition: background-color 0.3s ease;
 }
+
 
 /* --- COMPONENT: Note Card --- */
 .note-card {

@@ -144,6 +144,6 @@ npm run build -- --prefix-paths
 
 # TODO
 
-- dark mode with a toggle
+- better note management; close button?
 
 
