@@ -33,7 +33,6 @@ export default function NotePage({ data, children }) {
               </MdxLink>
             ))}
           </div>
-          {/* Optional: Add the "Direct Message" text from the old theme here if you want */}
         </div>
       )}
     </div>
@@ -51,7 +50,7 @@ export const query = graphql`
       }
       backlinks {
         id
-        excerpt(pruneLength: 80) # Increased length for better preview
+        excerpt(pruneLength: 80)
         frontmatter {
           title
         }
