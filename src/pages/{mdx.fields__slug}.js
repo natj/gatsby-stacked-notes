@@ -13,25 +13,18 @@ export default function NotePage({ data, children }) {
 
   return (
     <div>
-      {/* 2. WRAP EVERYTHING IN PROVIDER 
-          This ensures WikiLinks in the Header/Footer work correctly 
-      */}
       <MDXProvider components={{ a: MdxLink }}>
         
-        {/* --- HEADER SECTION --- */}
-        {/* Check frontmatter to allow hiding it on specific pages */}
         {!frontmatter.hideHeader && (
           <div className="note-header-area">
             <NoteHeader />
           </div>
         )}
 
-        {/* --- MAIN CONTENT --- */}
         <h1>{data.mdx.frontmatter.title}</h1>
         {children}
 
 
-        {/* 3. BACKLINKS (Keep this separate or move inside Provider if you want) */}
         {backlinks && backlinks.length > 0 && (
           <div className="references-block">
             <h3 className="references-title">
@@ -53,7 +46,6 @@ export default function NotePage({ data, children }) {
         )}
 
 
-        {/* --- FOOTER SECTION --- */}
         {!frontmatter.hideFooter && (
           <div className="note-footer-area">
             <NoteFooter />

@@ -144,10 +144,6 @@ npm run build -- --prefix-paths
 
 # TODO
 
-- fix erraneous ")}" at the end of each note
 - dark mode with a toggle
-- optional header and footer
-- mobile mode with no stacking
-- fix browser back button behavior
 
 
