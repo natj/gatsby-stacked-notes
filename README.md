@@ -65,13 +65,14 @@ Core files powering the "Garden" logic.
 │   │   └── theme_toggle.js       # Light/dark mode toggle button.
 │   │
 │   ├── context/
-│   │   ├── stack_context.js      # Manages note stack and branching logic.
-│   │   └── theme_context.js      # Manages light/dark theme state.
+│   │   ├── stack_context.js    # Manages note stack and branching logic.
+│   │   └── theme_context.js    # Manages light/dark theme state.
 │   │
 │   ├── hooks/
-│   │   └── use_win_width.js      # Monitors window width for responsive UI.
+│   │   └── useWindowWidth.js   # Monitors window width for responsive UI.
 │   │
 │   ├── layouts/
+
 │   │   └── index.js              # App wrapper. Syncs Gatsby location with stack.
 │   │
 │   ├── pages/

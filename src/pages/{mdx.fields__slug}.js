@@ -3,19 +3,22 @@ import { graphql } from 'gatsby';
 import { MDXProvider } from "@mdx-js/react";
 import MdxLink from '../components/mdx_link';
 
-// MDX partials.
+// Import partials (reusable MDX snippets) to be used in rendering.
 import NoteHeader from '../components/partials/NoteHeader.mdx';
 import NoteFooter from '../components/partials/NoteFooter.mdx';
 
-// Template for individual note pages.
+// Page Template: Gatsby automatically creates pages using this component for every MDX file.
+// 'data': The result of the GraphQL query below, injected as a prop.
+// 'children': The actual MDX content (converted to React components).
 export default function NotePage({ data, children }) {
   const { backlinks, frontmatter } = data.mdx;
 
   return (
     <div>
+      {/* MDXProvider: Defines how markdown elements (like links) should be rendered. */}
       <MDXProvider components={{ a: MdxLink }}>
         
-        {/* Render header if not hidden. */}
+        {/* Conditional Rendering: Render Header only if not hidden in frontmatter. */}
         {!frontmatter.hideHeader && (
           <div className="note-header-area">
             <NoteHeader />
@@ -24,10 +27,10 @@ export default function NotePage({ data, children }) {
 
         <h1>{data.mdx.frontmatter.title}</h1>
 
-        {/* Render note content. */}
+        {/* Render the main body of the note. */}
         {children}
 
-        {/* Render backlinks if present. */}
+        {/* Render Backlinks section if references exist. */}
         {backlinks && backlinks.length > 0 && (
           <div className="references-block">
             <h3 className="references-title">
@@ -48,7 +51,7 @@ export default function NotePage({ data, children }) {
           </div>
         )}
 
-        {/* Render footer if not hidden. */}
+        {/* Conditional Rendering: Render Footer if not hidden. */}
         {!frontmatter.hideFooter && (
           <div className="note-footer-area">
             <NoteFooter />
@@ -61,7 +64,8 @@ export default function NotePage({ data, children }) {
   );
 }
 
-// Query note data and backlinks.
+// GraphQL Query: Fetches data for this specific page.
+// The '$id' variable is provided by Gatsby context for the current page.
 export const query = graphql`
   query($id: String!) {
     mdx(id: { eq: $id }) {
@@ -73,6 +77,7 @@ export const query = graphql`
       fields {
         slug
       }
+      # Fetch all notes that link TO this note (generated in gatsby-node.js).
       backlinks {
         id
         excerpt(pruneLength: 80)

@@ -1,18 +1,20 @@
 import React from 'react';
-import { use_theme } from '../context/theme_context';
+import { useTheme } from '../context/theme_context';
 
-// Button to switch between light and dark themes.
 const ThemeToggle = () => {
-  const { theme, toggle_theme } = use_theme();
+  const { theme, toggle_theme } = useTheme();
 
   return (
     <button
+      // Event Listener: Calls 'toggle_theme' function when clicked.
       onClick={toggle_theme}
       aria-label="Toggle Dark Mode"
       className="fixed top-4 right-4 z-50 p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-200"
+      // Ternary Operator: (condition ? true_value : false_value).
+      // Sets tooltip text based on current theme.
       title={theme === 'light' ? "Switch to Dark Mode" : "Switch to Light Mode"}
     >
-      {/* Conditional icon based on theme. */}
+      {/* Conditional Rendering: Shows Moon icon if light mode, Sun icon if dark mode. */}
       {theme === 'light' ? (
         // MOON ICON (SVG)
         <svg 

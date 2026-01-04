@@ -17,7 +17,7 @@ To maintain code readability and conciseness, please adhere to the following gui
 Please follow these guidelines for code style:
 
 1.  **Capitalization for Objects:** Only objects (classes, constructors, React components) should start with a capital letter.
-2.  **CamelCase for Objects:** Use CamelCase (e.g., `MyObject`, `ReactComponent`) exclusively for object names.
-3.  **snake_case for Everything Else:** Use `snake_case` (e.g., `my_variable`, `function_name`) for all other variables, functions, and file names.
+2.  **CamelCase for Objects & Hooks:** Use CamelCase (e.g., `MyObject`, `ReactComponent`, `useStack`, `useTheme`) for object names and React Custom Hooks. **React Hooks must start with `use`.**
+3.  **snake_case for Everything Else:** Use `snake_case` (e.g., `my_variable`, `function_name`) for all other variables, functions, and file names (except hook files which should match the hook name).
 4.  **Short, Self-Explanatory Variable Names:** Use concise, clear variable names that are standard and self-explanatory (e.g., `i` for loop counters, `idx` for index, `len` for length, `num` for number). Avoid overly verbose names like `stack_index`.
 5.  **No Single-Line Definitions:** Avoid defining multiple variables on a single line (e.g., `float x=1,y=2;`). Each variable definition should have its own line for clarity.

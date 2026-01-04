@@ -1,21 +1,20 @@
 import React from 'react';
 import { Link } from 'gatsby';
-import { use_stack, use_note_idx } from '../context/stack_context';
+import { useStack, useNoteIndex } from '../context/stack_context';
 
-// Renders links within MDX content.
 const MdxLink = ({ href, children }) => {
-  const { set_source_idx } = use_stack();
-  const idx = use_note_idx(); 
+  const { set_source_idx } = useStack();
+  const idx = useNoteIndex(); 
   
   const is_internal = href && (href.startsWith('/') || href.startsWith('.'));
 
-  // Use Gatsby Link for internal navigation.
+  // Use Gatsby <Link> for internal routes to enable instant, client-side navigation without page reloads.
   if (is_internal) {
     return (
       <Link
         to={href}
+        // onClick: Handles the stack branching logic before navigation occurs.
         onClick={() => {
-          // Tell StackContext the index of the note containing the link for branching.
           if (idx !== -1) {
             set_source_idx(idx);
           }
@@ -27,7 +26,7 @@ const MdxLink = ({ href, children }) => {
     );
   }
 
-  // Standard anchor for external links.
+  // Use standard HTML <a> tag for external links to open in new tab.
   return (
     <a href={href} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-gray-700">
       {children}

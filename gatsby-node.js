@@ -2,7 +2,9 @@ const slugify = require("slugify");
 const path = require("path");
 const make_slug = require("./utils/slugify");
 
-// Create 'backlinks' field for MDX nodes.
+// API: createResolvers
+// Allows extending the GraphQL schema with custom fields.
+// Here we generate 'backlinks' by scanning all notes for links to the current note.
 exports.createResolvers = ({ createResolvers }) => {
   const resolvers = {
     Mdx: {
@@ -54,7 +56,9 @@ exports.createResolvers = ({ createResolvers }) => {
   createResolvers(resolvers);
 };
 
-// Create slug field on MDX nodes.
+// API: onCreateNode
+// Called when a new node is created. We attach a 'slug' field to MDX nodes
+// derived from their filename, ensuring consistent URLs.
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
 
@@ -77,7 +81,9 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 };
 
-// Define custom MDX types.
+// API: createSchemaCustomization
+// Explicitly defines types for GraphQL to ensure consistent queries,
+// even if some data fields (like frontmatter) are missing in files.
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions;
   const type_defs = `

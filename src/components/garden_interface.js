@@ -1,15 +1,17 @@
 import React from 'react';
-import { use_stack, NoteIndexContext } from '../context/stack_context';
+import { useStack, NoteIndexContext } from '../context/stack_context';
 import { MDXProvider } from "@mdx-js/react";
 import MdxLink from './mdx_link';
 import { Link } from 'gatsby';
-import use_win_width from '../hooks/use_win_width';
+import useWindowWidth from '../hooks/useWindowWidth';
 import ThemeToggle from './theme_toggle';
 
-// Reusable card for a note.
+// Functional Component: A function that returns UI (JSX).
+// Props (children, idx, etc.) are arguments passed to the component.
 const NoteCard = ({ children, idx, title, slug, is_stacked, is_mobile }) => (
   <div 
     className="note-card"
+    // Inline styles in React use Objects, not strings.
     style={{
       width: is_mobile ? '100vw' : undefined,
       left: is_mobile ? 0 : idx * 40, 
@@ -19,7 +21,7 @@ const NoteCard = ({ children, idx, title, slug, is_stacked, is_mobile }) => (
       boxShadow: is_mobile ? 'none' : undefined,
     }}
   >
-    {/* SPINE: Only show on Desktop */}
+    {/* Conditional Rendering: {condition && element} renders element only if condition is true. */}
     {!is_mobile && (
       <div className={`note-spine ${is_stacked ? 'visible' : ''}`}>
         <Link to={slug} className="spine-text">
@@ -28,7 +30,7 @@ const NoteCard = ({ children, idx, title, slug, is_stacked, is_mobile }) => (
       </div>
     )}
 
-    {/* CONTENT */}
+    {/* MDXProvider: Overrides default HTML elements (like <a>) with custom components (MdxLink) inside MDX content. */}
     <div className="note-content">
       <div className="prose max-w-none">
         <MDXProvider components={{ a: MdxLink }}>
@@ -39,27 +41,28 @@ const NoteCard = ({ children, idx, title, slug, is_stacked, is_mobile }) => (
   </div>
 );
 
-// Main interface for the note garden.
 export default function GardenInterface() {
-  const { stack } = use_stack();
-  const width = use_win_width();
+  const { stack } = useStack();
+  const width = useWindowWidth();
   const is_mobile = width <= 768;
 
   if (!stack || stack.length === 0) return null;
 
-  // Show only latest note on mobile, all on desktop.
   const notes_to_show = is_mobile ? [stack[stack.length - 1]] : stack;
 
   return (
     <div className="garden-layout relative">
       <ThemeToggle />
 
+      {/* Map: Iterates over the stack array to generate a list of components. */}
       {notes_to_show.map((item, i) => {
         const real_idx = is_mobile ? stack.length - 1 : i;
         const is_stacked = !is_mobile && real_idx < stack.length - 1;
         const title = item.path === '/' ? 'Home' : item.path.replace(/^\//, '').replace(/-/g, ' ');
 
         return (
+          // Context Provider: Injects specific index value for the child component tree.
+          // Key: Unique ID required by React for efficient list updates.
           <NoteIndexContext.Provider value={real_idx} key={item.path}>
              <NoteCard 
               idx={real_idx} 

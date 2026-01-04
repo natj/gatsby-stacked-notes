@@ -1,14 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-// Context for application theme.
+// Shared state for application theme (light/dark).
 const ThemeContext = createContext();
 
-// Provider for theme data.
 export const ThemeProvider = ({ children }) => {
   const [theme, set_theme] = useState(null); 
 
-  // Check localStorage or System Preference on mount.
+  // useEffect: Runs side-effects (DOM access, APIs) after rendering.
+  // Empty dependency array [] means this runs only once on mount.
   useEffect(() => {
+    // Check local storage or system preferences.
     const saved_theme = window.localStorage.getItem('theme');
     const is_dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
@@ -21,11 +22,13 @@ export const ThemeProvider = ({ children }) => {
     }
   }, []);
 
-  // Update CSS attribute and LocalStorage on change.
+  // Dependency array [theme]: Runs this effect whenever 'theme' state changes.
   useEffect(() => {
     if (!theme) return;
     
+    // Direct DOM manipulation to set CSS variable/attribute for styling.
     document.documentElement.setAttribute('data-theme', theme);
+    // Persist choice to browser storage.
     window.localStorage.setItem('theme', theme);
   }, [theme]);
 
@@ -33,7 +36,7 @@ export const ThemeProvider = ({ children }) => {
     set_theme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  // Render children invisibly until theme is determined to prevent flash.
+  // Prevent flash of unstyled content by waiting for theme determination.
   if (!theme) return <div style={{ visibility: 'hidden' }}>{children}</div>;
 
   return (
@@ -43,5 +46,4 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
-// Hook to access theme context.
-export const use_theme = () => useContext(ThemeContext);
+export const useTheme = () => useContext(ThemeContext);
