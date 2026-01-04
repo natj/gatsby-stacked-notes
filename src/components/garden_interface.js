@@ -4,7 +4,6 @@ import { MDXProvider } from "@mdx-js/react";
 import MdxLink from './mdx_link';
 import { Link } from 'gatsby';
 import useWindowWidth from '../hooks/useWindowWidth';
-import ThemeToggle from './theme_toggle';
 
 // Functional Component: A function that returns UI (JSX).
 // Props (children, idx, etc.) are arguments passed to the component.

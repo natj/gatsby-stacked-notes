@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Shared state for application theme (light/dark).
-const ThemeContext = createContext();
+const ThemeContext = createContext({ theme: 'light', toggle_theme: () => {} });
 
 export const ThemeProvider = ({ children }) => {
   const [theme, set_theme] = useState(null); 

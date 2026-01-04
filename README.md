@@ -137,6 +137,7 @@ npm run build -- --prefix-paths
 
 # TODO
 
+- minimal mistakes -like gallery feature into notes
 - ghost (wiki) links to missing notes are styled with a dark red text to show that they do not exist
 - notes can have "title of content" listing after the title (when toc:true is set in markdown preamble)
 - latex support to md
