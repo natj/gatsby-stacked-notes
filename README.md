@@ -135,8 +135,5 @@ You must include the flag when building.
 npm run build -- --prefix-paths
 ```
 
-# TODO
-
-- better note management; close button?
 
 
