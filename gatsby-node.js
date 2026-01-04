@@ -1,59 +1,46 @@
 const slugify = require("slugify");
 const path = require("path");
-const makeSlug = require("./utils/slugify"); // <--- Import shared function
+const make_slug = require("./utils/slugify");
 
-
-
-// : Create the 'backlinks' field
+// Create 'backlinks' field for MDX nodes.
 exports.createResolvers = ({ createResolvers }) => {
   const resolvers = {
     Mdx: {
       backlinks: {
         type: ["Mdx"],
         resolve: async (source, args, context, info) => {
-          const allNotes = await context.nodeModel.findAll({ type: "Mdx" });
+          const notes = await context.nodeModel.findAll({ type: "Mdx" });
           
-          // 1. Get the current note's slug base
-          // e.g. "/notes/My-Note" -> "my-note" (assuming strict/lower happened on file creation)
-          const mySlugBase = source.fields.slug.replace(/^\/|\/$/g, '').split('/').pop();
+          // Get current note's slug base (e.g. "my-note").
+          const slug_base = source.fields.slug.replace(/^\/|\/$/g, '').split('/').pop();
 
-          console.log(`-----generating backlinks for ${mySlugBase}`);
-
-          return allNotes.entries.filter((note) => {
+          return notes.entries.filter((note) => {
             if (note.id === source.id) return false;
 
-            // We check the file path. If it contains "partials", we skip it.
-            // Note: In Gatsby 5, path info is often in 'internal.contentFilePath'
-            const filePath = note.internal.contentFilePath || "";
-            if (filePath.includes("src/components/partials")) {
+            // Skip partials.
+            const file_path = note.internal.contentFilePath || "";
+            if (file_path.includes("src/components/partials")) {
               return false;
             }
 
-            //console.log(`Checking if ${note.fields.slug} links to me...`);
+            // Scan for [[Wiki Links]].
+            const wiki_matches = [...note.body.matchAll(/\[\[(.*?)\]\]/g)];
 
-            // 2. Scan for [[Wiki Links]]
-            const wikiMatches = [...note.body.matchAll(/\[\[(.*?)\]\]/g)];
+            for (const match of wiki_matches) {
+              let link_text = match[1]; // "My Note" or "My Note|Label"
 
-            for (const match of wikiMatches) {
-              let linkText = match[1]; // "My Note" or "My Note|Label"
-
-              // Remove styling pipe if present
-              if (linkText.includes('|')) {
-                linkText = linkText.split('|')[0];
+              if (link_text.includes('|')) {
+                link_text = link_text.split('|')[0];
               }
 
-              // 3. USE SHARED SLUGIFY 
-              // This turns "My Note" -> "my-note" using the exact rules from gatsby-config
-              const candidateSlug = makeSlug(linkText);
+              const candidate_slug = make_slug(link_text);
 
-              //console.log(` comparing links ${candidateSlug} to ${mySlugBase}`);
-
-              if (candidateSlug === mySlugBase) {
+              if (candidate_slug === slug_base) {
                 return true;
               }
             }
             
-            // (Optional) Keep the standard markdown check if needed
+            // Standard markdown link check.
             if (note.body.includes(`](${source.fields.slug})`)) {
                return true;
             }
@@ -67,31 +54,21 @@ exports.createResolvers = ({ createResolvers }) => {
   createResolvers(resolvers);
 };
 
-
-
+// Create slug field on MDX nodes.
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
 
-  // 1. Check if the node is an MDX file
   if (node.internal.type === "Mdx") {
-    
-    // 2. Get the parent file node to find the actual filename
-    // (MDX nodes are children of File nodes)
-    const fileNode = getNode(node.parent);
-    
-    // 3. Get the filename without extension (e.g. "My Note.md" -> "My Note")
-    const fileName = fileNode.name;
+    const file_node = getNode(node.parent);
+    const file_name = file_node.name;
 
-    // 4. Create the slug using the EXACT same logic as your wiki-links
-    // Special handling: if filename is "index", slug should be "/"
     let slug = "";
-    if (fileName === "index") {
+    if (file_name === "index") {
       slug = "/";
     } else {
-      slug = "/" + slugify(fileName, { lower: true, strict: true });
+      slug = "/" + slugify(file_name, { lower: true, strict: true });
     }
 
-    // 5. Add this new 'slug' field to the MDX node
     createNodeField({
       node,
       name: "slug",
@@ -100,11 +77,10 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 };
 
-
-
+// Define custom MDX types.
 exports.createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions;
-  const typeDefs = `
+  const type_defs = `
     type Mdx implements Node {
       frontmatter: MdxFrontmatter
     }
@@ -114,6 +90,6 @@ exports.createSchemaCustomization = ({ actions }) => {
       title: String
     }
   `;
-  createTypes(typeDefs);
+  createTypes(type_defs);
 };
 

@@ -11,3 +11,13 @@ To maintain code readability and conciseness, please adhere to the following gui
     *   "The following code does..." (Instead, directly explain what it does.)
 4.  **Focus on Logic:** Explain complex logic, edge cases, or design decisions that are not immediately apparent from the code itself.
 5.  **Maintain React Context (if applicable):** When explaining React components, hooks, or context, briefly describe their purpose and how they integrate into the React lifecycle or component tree.
+
+## Code Style Preferences
+
+Please follow these guidelines for code style:
+
+1.  **Capitalization for Objects:** Only objects (classes, constructors, React components) should start with a capital letter.
+2.  **CamelCase for Objects:** Use CamelCase (e.g., `MyObject`, `ReactComponent`) exclusively for object names.
+3.  **snake_case for Everything Else:** Use `snake_case` (e.g., `my_variable`, `function_name`) for all other variables, functions, and file names.
+4.  **Short, Self-Explanatory Variable Names:** Use concise, clear variable names that are standard and self-explanatory (e.g., `i` for loop counters, `idx` for index, `len` for length, `num` for number). Avoid overly verbose names like `stack_index`.
+5.  **No Single-Line Definitions:** Avoid defining multiple variables on a single line (e.g., `float x=1,y=2;`). Each variable definition should have its own line for clarity.

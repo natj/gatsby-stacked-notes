@@ -1,14 +1,11 @@
-const wikiLinkPlugin = require("remark-wiki-link").wikiLinkPlugin;
-const makeSlug = require("./utils/slugify"); // <--- Import shared function
-
+const wiki_link_plugin = require("remark-wiki-link").wikiLinkPlugin;
+const make_slug = require("./utils/slugify");
 
 module.exports = {
   pathPrefix: "/home/jnattila/astro-curriculum",
   siteMetadata: {
     title: "My Modern Garden",
   },
-  // We need to define the path prefix if you are deploying to GitHub Pages
-  // pathPrefix: "/your-repo-name", 
   plugins: [
     `gatsby-plugin-postcss`,
     `gatsby-plugin-layout`,
@@ -33,10 +30,10 @@ module.exports = {
         mdxOptions: {
           remarkPlugins: [
             [
-              wikiLinkPlugin,
+              wiki_link_plugin,
               {
-                // USE THE SHARED FUNCTION HERE
-                pageResolver: (name) => [makeSlug(name)],
+                // Resolve links using shared slugify function.
+                pageResolver: (name) => [make_slug(name)],
                 hrefTemplate: (permalink) => `/${permalink}`,
                 wikiLinkClassName: "internal-link",
               },
