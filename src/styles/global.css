@@ -57,17 +57,9 @@ body {
   border-right: 1px solid var(--color-gray);
   position: sticky;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow-y: auto;
+  overflow: hidden; /* Prevent card itself from scrolling */
   width: var(--note-width);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.125);
-}
-
-.note-card::-webkit-scrollbar {
-  display: none;
-}
-.note-card {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
 
 /* --- COMPONENT: Spine --- */
@@ -80,6 +72,7 @@ body {
   z-index: 20;
   cursor: pointer;
   display: none; 
+  background-color: var(--color-background); /* Ensure it covers content behind it if needed */
 }
 
 .note-spine.visible {
@@ -91,13 +84,13 @@ body {
   transform-origin: bottom left;
   position: absolute;
   bottom: 1rem;
-  left: 2rem;
+  left: 1.5rem; /* Adjusted for better centering in spine */
   white-space: nowrap;
-  font-size: 1.25rem;
+  font-size: 1rem; /* Slightly smaller to fit longer titles */
   font-weight: 700;
-  color: var(--color-gray);
+  color: var(--color-text-light); /* Better contrast */
   text-decoration: none;
-  width: 400px;
+  width: calc(100vh - 4rem); /* Long enough for titles */
   text-align: left;
 }
 
@@ -108,8 +101,17 @@ body {
 /* --- COMPONENT: Content Area --- */
 .note-content {
   padding: 3rem 2.5rem;
-  min-height: 100vh;
+  height: 100%; /* Fill the card */
+  overflow-y: auto; /* Content scrolls instead of card */
   background-color: var(--color-background);
+}
+
+.note-content::-webkit-scrollbar {
+  display: none;
+}
+.note-content {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* --- COMPONENT: Typography (Prose) --- */

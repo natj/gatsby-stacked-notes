@@ -19,7 +19,7 @@ export const StackProvider = ({ children }) => {
     source_idx_ref.current = idx;
   };
 
-  const update_stack = (raw_path, page_comp) => {
+  const update_stack = (raw_path, page_comp, title) => {
     // --- 1. CLEAN THE PATH ---
     // Remove Gatsby's production prefix to normalize note paths.
     let path = raw_path;
@@ -56,7 +56,7 @@ export const StackProvider = ({ children }) => {
       // If clicked from a note (source_idx set), discard all subsequent notes (branch off).
       if (source_idx !== null) {
         const new_stack = prev_stack.slice(0, source_idx + 1);
-        return [...new_stack, { path, component: page_comp }];
+        return [...new_stack, { path, component: page_comp, title }];
       }
 
       // SCENARIO 2: HISTORY / BACK BUTTON
@@ -69,7 +69,7 @@ export const StackProvider = ({ children }) => {
 
       // SCENARIO 3: FRESH NOTE
       // Append new note to the stack.
-      return [...prev_stack, { path, component: page_comp }];
+      return [...prev_stack, { path, component: page_comp, title }];
     });
   };
 

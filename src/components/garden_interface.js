@@ -58,7 +58,9 @@ export default function GardenInterface() {
       {notes_to_show.map((item, i) => {
         const real_idx = is_mobile ? stack.length - 1 : i;
         const is_stacked = !is_mobile && real_idx < stack.length - 1;
-        const title = item.path === '/' ? 'Home' : item.path.replace(/^\//, '').replace(/-/g, ' ');
+        
+        // Use the title from the stack if available, otherwise fallback to path.
+        const title = item.title || (item.path === '/' ? 'Home' : item.path.replace(/^\//, '').replace(/-/g, ' '));
 
         return (
           // Context Provider: Injects specific index value for the child component tree.
