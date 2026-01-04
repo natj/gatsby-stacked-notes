@@ -73,8 +73,19 @@ export const StackProvider = ({ children }) => {
     });
   };
 
+  const close_note = (idx_to_close) => {
+    set_stack((prev_stack) => {
+      // Prevent closing the last remaining note (root) if you want to keep at least one
+      if (idx_to_close === 0 && prev_stack.length === 1) {
+        return prev_stack;
+      }
+      // Remove the note at the index and all subsequent notes
+      return prev_stack.slice(0, idx_to_close);
+    });
+  };
+
   return (
-    <StackContext.Provider value={{ stack, update_stack, set_source_idx }}>
+    <StackContext.Provider value={{ stack, update_stack, set_source_idx, close_note }}>
       {children}
     </StackContext.Provider>
   );

@@ -8,7 +8,7 @@ import ThemeToggle from './theme_toggle';
 
 // Functional Component: A function that returns UI (JSX).
 // Props (children, idx, etc.) are arguments passed to the component.
-const NoteCard = ({ children, idx, title, slug, is_stacked, is_mobile }) => (
+const NoteCard = ({ children, idx, title, slug, is_stacked, is_mobile, on_close }) => (
   <div 
     className="note-card"
     // Inline styles in React use Objects, not strings.
@@ -31,7 +31,20 @@ const NoteCard = ({ children, idx, title, slug, is_stacked, is_mobile }) => (
     )}
 
     {/* MDXProvider: Overrides default HTML elements (like <a>) with custom components (MdxLink) inside MDX content. */}
-    <div className="note-content">
+    <div className="note-content relative">
+      {/* Close Button: Absolute positioned top-right. Only shown if on_close is provided. */}
+      {on_close && (
+        <button 
+          onClick={on_close}
+          className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors z-50 p-2"
+          aria-label="Close note"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      )}
+
       <div className="prose max-w-none">
         <MDXProvider components={{ a: MdxLink }}>
           {children}
@@ -42,7 +55,7 @@ const NoteCard = ({ children, idx, title, slug, is_stacked, is_mobile }) => (
 );
 
 export default function GardenInterface() {
-  const { stack } = useStack();
+  const { stack, close_note } = useStack();
   const width = useWindowWidth();
   const is_mobile = width <= 768;
 
@@ -72,6 +85,8 @@ export default function GardenInterface() {
               slug={item.path}
               is_stacked={is_stacked}
               is_mobile={is_mobile}
+              // Only the last note in the stack can be closed, and only if it's not the root note.
+              on_close={real_idx > 0 && real_idx === stack.length - 1 ? () => close_note(real_idx) : undefined}
             >
               {item.component}
             </NoteCard>
