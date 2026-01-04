@@ -65,7 +65,7 @@ export default function GardenInterface() {
 
   return (
     <div className="garden-layout relative">
-      <ThemeToggle />
+      {/* ThemeToggle removed from here */}
 
       {/* Map: Iterates over the stack array to generate a list of components. */}
       {notes_to_show.map((item, i) => {

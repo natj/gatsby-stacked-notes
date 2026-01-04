@@ -3,6 +3,10 @@ import { StackProvider, useStack } from '../context/stack_context';
 import { ThemeProvider } from '../context/theme_context';
 import GardenInterface from '../components/garden_interface';
 import '../styles/global.css';
+import { MDXProvider } from "@mdx-js/react";
+import MdxLink from '../components/mdx_link';
+import NoteHeader from '../components/partials/NoteHeader.mdx';
+import ThemeToggle from '../components/theme_toggle';
 
 // Component responsible for syncing URL changes with our custom stack logic.
 const StackHandler = ({ location, children }) => {
@@ -20,7 +24,24 @@ const StackHandler = ({ location, children }) => {
     update_stack(location.pathname, children, title);
   }, [location.pathname, children, update_stack, title]);
 
-  return <GardenInterface />;
+  return (
+    <div className="app-container">
+      {/* Global Header */}
+      <header className="global-header">
+        <div className="prose max-w-none">
+          <MDXProvider components={{ a: MdxLink }}>
+            <NoteHeader />
+          </MDXProvider>
+        </div>
+        <ThemeToggle />
+      </header>
+
+      {/* Main Garden Area - Takes remaining height */}
+      <div className="garden-wrapper">
+        <GardenInterface />
+      </div>
+    </div>
+  );
 };
 
 // Layout Component: Gatsby wraps every page with this component.

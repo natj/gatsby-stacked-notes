@@ -9,7 +9,7 @@ const ThemeToggle = () => {
       // Event Listener: Calls 'toggle_theme' function when clicked.
       onClick={toggle_theme}
       aria-label="Toggle Dark Mode"
-      className="fixed top-4 right-4 z-50 p-2 rounded-full bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-200"
+      className="theme-toggle"
       // Ternary Operator: (condition ? true_value : false_value).
       // Sets tooltip text based on current theme.
       title={theme === 'light' ? "Switch to Dark Mode" : "Switch to Light Mode"}

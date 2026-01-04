@@ -4,7 +4,6 @@ import { MDXProvider } from "@mdx-js/react";
 import MdxLink from '../components/mdx_link';
 
 // Import partials (reusable MDX snippets) to be used in rendering.
-import NoteHeader from '../components/partials/NoteHeader.mdx';
 import NoteFooter from '../components/partials/NoteFooter.mdx';
 
 // Page Template: Gatsby automatically creates pages using this component for every MDX file.
@@ -18,12 +17,7 @@ export default function NotePage({ data, children }) {
       {/* MDXProvider: Defines how markdown elements (like links) should be rendered. */}
       <MDXProvider components={{ a: MdxLink }}>
         
-        {/* Conditional Rendering: Render Header only if not hidden in frontmatter. */}
-        {!frontmatter.hideHeader && (
-          <div className="note-header-area">
-            <NoteHeader />
-          </div>
-        )}
+        {/* Header removed from individual note level */}
 
         <h1>{data.mdx.frontmatter.title}</h1>
 
