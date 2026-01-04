@@ -137,9 +137,10 @@ npm run build -- --prefix-paths
 
 # TODO
 
-- open notes in the stack have their link highlighted with a light blue background
 - ghost (wiki) links to missing notes are styled with a dark red text to show that they do not exist
 - notes can have "title of content" listing after the title (when toc:true is set in markdown preamble)
 - latex support to md
-- header spans the whole page (not independently of each note)
 - a preview box opens when however above a note link
+
+Tasks pending because gemini failed (too complex):
+- open notes in the stack have their link highlighted with a light blue background

@@ -21,3 +21,4 @@ Please follow these guidelines for code style:
 3.  **snake_case for Everything Else:** Use `snake_case` (e.g., `my_variable`, `function_name`) for all other variables, functions, and file names (except hook files which should match the hook name).
 4.  **Short, Self-Explanatory Variable Names:** Use concise, clear variable names that are standard and self-explanatory (e.g., `i` for loop counters, `idx` for index, `len` for length, `num` for number). Avoid overly verbose names like `stack_index`.
 5.  **No Single-Line Definitions:** Avoid defining multiple variables on a single line (e.g., `float x=1,y=2;`). Each variable definition should have its own line for clarity.
+6.  **External Styling:** Styling should always be defined in external CSS files (e.g., `global.css`) using semantic classes. Avoid inline styles and minimize the use of utility classes (like Tailwind) within component files to keep the markup clean and styling centralized.
