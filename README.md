@@ -15,14 +15,7 @@ This theme features a sliding pane layout where notes open side-by-side horizont
 
 ## Installation & Setup
 
-### 1. Prerequisites
-Node.js (v18+ recommended)
-
-```
-Gatsby CLI (npm install -g gatsby-cli)
-```
-
-### 2. Initialize
+### 1. Initialize
 Since this is a custom theme structure, assume you have the files in place. If starting fresh:
 
 ```bash
@@ -30,13 +23,12 @@ npm install
 ```
 
 
-### 3. Key Dependencies
-Ensure your package.json includes these core libraries:
+### 2. Key Dependencies
+Ensure your `package.json` includes these core libraries:
 
 ```JSON
 
-"dependencies": {
-  "gatsby": "^5.x",
+"dependencies": { "gatsby": "^5.x",
   "gatsby-plugin-mdx": "^5.x",
   "gatsby-plugin-layout": "^4.x",
   "gatsby-plugin-postcss": "^6.x",
@@ -48,16 +40,14 @@ Ensure your package.json includes these core libraries:
 }
 ```
 
-### 4. Running Locally
+### 3. Running Locally
 
 ```Bash
 npm run clean
 npm run develop
 ```
 
-Access the site at `http://localhost:8000`. Alternatively, you can build and serve with `npm run build` && `npm run serve`.
-
-
+Access the site at http://localhost:8000. Alternatively, you can build and serve with `npm run build` && `npm run serve`.
 
 
 ### File Structure & Description
