@@ -51,42 +51,44 @@ Access the site at http://localhost:8000. Alternatively, you can build and serve
 
 
 ### File Structure & Description
-Here is a breakdown of the core files that make the "Garden" logic work.
+Core files powering the "Garden" logic.
 
 ```Plaintext
 
 /
-├── content/                  # Your Markdown/MDX notes go here
-│   ├── index.mdx             # The entry point (Home)
-│   └── ...
+├── content/                      # Markdown/MDX notes.
 ├── src/
 │   ├── components/
-│   │   ├── GardenInterface.js # THE CORE UI. Renders the horizontal list of NoteCards.
-│   │   │                      # Handles the "Spine" visualization and obstructed states.
-│   │   │
-│   │   └── MdxLink.js         # Custom link component. Intercepts clicks to tell
-│   │                          # StackContext "I am clicking from Index X".
+│   │   ├── partials/             # Reusable MDX snippets (Header/Footer).
+│   │   ├── garden_interface.js   # UI entry. Renders sliding NoteCards.
+│   │   ├── mdx_link.js           # Intercepts links for stack navigation.
+│   │   └── theme_toggle.js       # Light/dark mode toggle button.
 │   │
 │   ├── context/
-│   │   └── StackContext.js    # THE BRAIN. Manages the array of open notes.
-│   │                          # Contains the "Branching" logic and "Source Index" ref.
+│   │   ├── stack_context.js      # Manages note stack and branching logic.
+│   │   └── theme_context.js      # Manages light/dark theme state.
+│   │
+│   ├── hooks/
+│   │   └── use_win_width.js      # Monitors window width for responsive UI.
 │   │
 │   ├── layouts/
-│   │   └── index.js           # Wraps the entire app. Captures Gatsby location changes
-│   │                          # and feeds them into StackContext.
+│   │   └── index.js              # App wrapper. Syncs Gatsby location with stack.
 │   │
 │   ├── pages/
-│   │   └── {mdx.fields__slug}.js  # The Template for every note.
-│   │                              # Queries 'backlinks' and renders content.
+│   │   ├── {mdx.fields__slug}.js # Template for individual notes.
+│   │   └── 404.js                # Custom "Not Found" page.
 │   │
 │   └── styles/
-│       └── global.css         # Tailwind directives
+│       └── global.css            # Tailwind and custom global styles.
 │
 ├── utils/
-│   └── slugify.js            # Shared utility to ensure [[Wiki Links]] and URLs match perfectly.
+│   └── slugify.js                # Utility for consistent URL slugs.
 │
-├── gatsby-config.js          # Configures MDX, WikiLinks, and Path Prefix.
-└── gatsby-node.js            # Generates 'Backlinks' field and creates Slugs.
+├── gatsby-config.js              # Gatsby plugins and site configuration.
+├── gatsby-node.js                # Custom GraphQL fields (backlinks) and slugs.
+├── postcss.config.js             # PostCSS configuration for Tailwind.
+├── tailwind.config.js            # Tailwind CSS configuration.
+└── GEMINI.md                     # Project-specific coding and comment style guide.
 ```
 
 
