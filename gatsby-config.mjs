@@ -1,7 +1,23 @@
-const wiki_link_plugin = require("remark-wiki-link").wikiLinkPlugin;
-const make_slug = require("./utils/slugify");
+import remarkWikiLinkPkg from "remark-wiki-link";
+const wiki_link_plugin = remarkWikiLinkPkg;
+import make_slug from "./utils/slugify.mjs";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+console.log("DEBUG: remarkMath type:", typeof remarkMath);
+console.log("DEBUG: rehypeKatex type:", typeof rehypeKatex);
+console.log("DEBUG: wiki_link_plugin type:", typeof wiki_link_plugin);
+console.log("DEBUG: remarkWikiLinkPkg:", remarkWikiLinkPkg);
+
+/**
+ * @type {import('gatsby').GatsbyConfig}
+ */
+const config = {
   // Path Prefix: Used when deploying to a subdirectory (like GitHub Pages).
   pathPrefix: "/home/jnattila/astro-curriculum",
   siteMetadata: {
@@ -35,6 +51,7 @@ module.exports = {
         extensions: [`.mdx`, `.md`],
         mdxOptions: {
           remarkPlugins: [
+            remarkMath,
             [
               wiki_link_plugin,
               {
@@ -45,8 +62,11 @@ module.exports = {
               },
             ],
           ],
+          rehypePlugins: [rehypeKatex],
         },
       },
     },
   ],
 };
+
+export default config;

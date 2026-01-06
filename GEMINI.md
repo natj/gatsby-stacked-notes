@@ -22,3 +22,8 @@ Please follow these guidelines for code style:
 4.  **Short, Self-Explanatory Variable Names:** Use concise, clear variable names that are standard and self-explanatory (e.g., `i` for loop counters, `idx` for index, `len` for length, `num` for number). Avoid overly verbose names like `stack_index`.
 5.  **No Single-Line Definitions:** Avoid defining multiple variables on a single line (e.g., `float x=1,y=2;`). Each variable definition should have its own line for clarity.
 6.  **External Styling:** Styling should always be defined in external CSS files (e.g., `global.css`) using semantic classes. Avoid inline styles and minimize the use of utility classes (like Tailwind) within component files to keep the markup clean and styling centralized.
+7.  **Modern Ecosystem & ESM:**
+    - Prefer the **latest, modern versions** of libraries (e.g., Gatsby v5+, React 18+).
+    - Embrace **ES Modules (ESM)**. Since Gatsby v5 and MDX v2 enforce strict ESM compliance for plugins (like `remark` and `rehype` ecosystem), configuration files (`gatsby-config.js`, `gatsby-node.js`) should eventually be migrated to `.mjs` or refactored to handle ESM imports properly.
+    - When adding functionalities (like LaTeX), choose modern, performance-oriented libraries (e.g., `KaTeX` over `MathJax`) and ensure their plugins are compatible with the MDX v2 AST.
+8.  **Verification after Major Revisions:** After significant code changes—such as renaming files, large logic rewrites, or structural updates—always verify compilation and runtime stability. The standard procedure is to execute `npm run clean` followed by `npm run develop` (or `npm run build`) to ensure the cache is purged and the system boots correctly with the new changes.

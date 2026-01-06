@@ -3,6 +3,7 @@ import { StackProvider, useStack } from '../context/stack_context';
 import { ThemeProvider } from '../context/theme_context';
 import GardenInterface from '../components/garden_interface';
 import '../styles/global.css';
+import 'katex/dist/katex.min.css'; // KaTeX styles for math rendering
 import { MDXProvider } from "@mdx-js/react";
 import MdxLink from '../components/mdx_link';
 import NoteHeader from '../components/partials/NoteHeader.mdx';

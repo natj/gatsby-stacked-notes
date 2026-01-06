@@ -1,7 +1,7 @@
 // Utility to create URL-friendly slugs.
-const slugify = require("slugify");
+import slugify from "slugify";
 
-module.exports = (text) => {
+export default (text) => {
   return slugify(text, { 
     lower: true,  // Lowercase slug.
     strict: true  // Remove non-URL-friendly characters.

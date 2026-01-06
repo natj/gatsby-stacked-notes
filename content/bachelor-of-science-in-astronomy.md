@@ -5,6 +5,10 @@ title: B.Sc. in Astronomy
 Fysikaalisten tieteiden kandiohjelma (Tähtitieteen opintosuunta)
 
 
+$E = m c^2$ and 
+$$\oint x^2 \, dx = \sum \frac{x}{2}$$
+
+
 ## FYS1100 Fysiikka, perusopinnot
 
 - FYS1001 [[Vuorovaikutukset ja kappaleet]] 5 op

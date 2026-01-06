@@ -1,11 +1,11 @@
-const slugify = require("slugify");
-const path = require("path");
-const make_slug = require("./utils/slugify");
+import slugify from "slugify";
+import path from "path";
+import make_slug from "./utils/slugify.mjs";
 
 // API: createResolvers
 // Allows extending the GraphQL schema with custom fields.
 // Here we generate 'backlinks' by scanning all notes for links to the current note.
-exports.createResolvers = ({ createResolvers }) => {
+export const createResolvers = ({ createResolvers }) => {
   const resolvers = {
     Mdx: {
       backlinks: {
@@ -59,7 +59,7 @@ exports.createResolvers = ({ createResolvers }) => {
 // API: onCreateNode
 // Called when a new node is created. We attach a 'slug' field to MDX nodes
 // derived from their filename, ensuring consistent URLs.
-exports.onCreateNode = ({ node, actions, getNode }) => {
+export const onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
 
   if (node.internal.type === "Mdx") {
@@ -84,7 +84,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 // API: createSchemaCustomization
 // Explicitly defines types for GraphQL to ensure consistent queries,
 // even if some data fields (like frontmatter) are missing in files.
-exports.createSchemaCustomization = ({ actions }) => {
+export const createSchemaCustomization = ({ actions }) => {
   const { createTypes } = actions;
   const type_defs = `
     type Mdx implements Node {
@@ -98,4 +98,3 @@ exports.createSchemaCustomization = ({ actions }) => {
   `;
   createTypes(type_defs);
 };
-
