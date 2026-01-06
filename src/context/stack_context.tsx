@@ -1,27 +1,42 @@
-import React, { createContext, useContext, useState, useRef } from 'react';
+import React, { createContext, useContext, useState, useRef, ReactNode } from 'react';
 import { withPrefix } from 'gatsby'; 
 
+interface StackItem {
+  path: string;
+  component: ReactNode;
+  title: string | null;
+}
+
+interface StackContextType {
+  stack: StackItem[];
+  update_stack: (raw_path: string, page_comp: ReactNode, title: string | null) => void;
+  set_source_idx: (idx: number) => void;
+  close_note: (idx_to_close: number) => void;
+}
+
 // Context allows sharing data globally without passing props down through every component.
-const StackContext = createContext();
-export const NoteIndexContext = createContext(-1);
+const StackContext = createContext<StackContextType | undefined>(undefined);
+export const NoteIndexContext = createContext<number>(-1);
+
+interface StackProviderProps {
+  children: ReactNode;
+}
 
 // Provider component wraps the app to expose 'stack' state to all children.
-export const StackProvider = ({ children }) => {
+export const StackProvider: React.FC<StackProviderProps> = ({ children }) => {
   // useState: Creates reactive state 'stack' and a setter 'set_stack'.
-  // Re-renders components using this context when state changes.
-  const [stack, set_stack] = useState([]);
+  const [stack, set_stack] = useState<StackItem[]>([]);
 
   // useRef: Persists values between renders without triggering re-renders.
-  const source_idx_ref = useRef(null);
-  const cur_path_ref = useRef(null);
+  const source_idx_ref = useRef<number | null>(null);
+  const cur_path_ref = useRef<string | null>(null);
 
-  const set_source_idx = (idx) => {
+  const set_source_idx = (idx: number) => {
     source_idx_ref.current = idx;
   };
 
-  const update_stack = (raw_path, page_comp, title) => {
+  const update_stack = (raw_path: string, page_comp: ReactNode, title: string | null) => {
     // --- 1. CLEAN THE PATH ---
-    // Remove Gatsby's production prefix to normalize note paths.
     let path = raw_path;
     const prefix = withPrefix('/');
 
@@ -38,7 +53,6 @@ export const StackProvider = ({ children }) => {
     }
     
     // --- 2. GUARD CLAUSE ---
-    // Prevent double-fires (common in React Strict Mode) from adding duplicates.
     const is_same_path = path === cur_path_ref.current;
     const is_explicit_click = source_idx_ref.current !== null;
 
@@ -53,14 +67,12 @@ export const StackProvider = ({ children }) => {
     // Updates state based on previous state to ensure accuracy.
     set_stack((prev_stack) => {
       // SCENARIO 1: BRANCHING
-      // If clicked from a note (source_idx set), discard all subsequent notes (branch off).
       if (source_idx !== null) {
         const new_stack = prev_stack.slice(0, source_idx + 1);
         return [...new_stack, { path, component: page_comp, title }];
       }
 
       // SCENARIO 2: HISTORY / BACK BUTTON
-      // If note exists in history, revert stack to that point.
       const rev_idx = [...prev_stack].reverse().findIndex(item => item.path === path);
       if (rev_idx !== -1) {
         const exist_idx = prev_stack.length - 1 - rev_idx;
@@ -68,18 +80,15 @@ export const StackProvider = ({ children }) => {
       }
 
       // SCENARIO 3: FRESH NOTE
-      // Append new note to the stack.
       return [...prev_stack, { path, component: page_comp, title }];
     });
   };
 
-  const close_note = (idx_to_close) => {
+  const close_note = (idx_to_close: number) => {
     set_stack((prev_stack) => {
-      // Prevent closing the last remaining note (root) if you want to keep at least one
       if (idx_to_close === 0 && prev_stack.length === 1) {
         return prev_stack;
       }
-      // Remove the note at the index and all subsequent notes
       return prev_stack.slice(0, idx_to_close);
     });
   };
@@ -92,5 +101,12 @@ export const StackProvider = ({ children }) => {
 };
 
 // Custom hooks to consume context values in components.
-export const useStack = () => useContext(StackContext);
+export const useStack = () => {
+  const context = useContext(StackContext);
+  if (context === undefined) {
+    throw new Error('useStack must be used within a StackProvider');
+  }
+  return context;
+};
+
 export const useNoteIndex = () => useContext(NoteIndexContext);

@@ -1,22 +1,17 @@
 import React from 'react';
 import { useTheme } from '../context/theme_context';
 
-const ThemeToggle = () => {
+const ThemeToggle: React.FC = () => {
   const { theme, toggle_theme } = useTheme();
 
   return (
     <button
-      // Event Listener: Calls 'toggle_theme' function when clicked.
       onClick={toggle_theme}
       aria-label="Toggle Dark Mode"
       className="theme-toggle"
-      // Ternary Operator: (condition ? true_value : false_value).
-      // Sets tooltip text based on current theme.
       title={theme === 'light' ? "Switch to Dark Mode" : "Switch to Light Mode"}
     >
-      {/* Conditional Rendering: Shows Moon icon if light mode, Sun icon if dark mode. */}
       {theme === 'light' ? (
-        // MOON ICON (SVG)
         <svg 
           className="w-5 h-5 text-gray-800" 
           fill="none" 
@@ -27,7 +22,6 @@ const ThemeToggle = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
         </svg>
       ) : (
-        // SUN ICON (SVG)
         <svg 
           className="w-5 h-5 text-yellow-400" 
           fill="none" 

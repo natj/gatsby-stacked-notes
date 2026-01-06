@@ -4,4 +4,5 @@ node_modules
 public
 .env
 content
+content_full
 package-lock.json

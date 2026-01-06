@@ -1,23 +1,15 @@
 import remarkWikiLinkPkg from "remark-wiki-link";
 const wiki_link_plugin = remarkWikiLinkPkg;
-import make_slug from "./utils/slugify.mjs";
+import make_slug from "./utils/slugify";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-console.log("DEBUG: remarkMath type:", typeof remarkMath);
-console.log("DEBUG: rehypeKatex type:", typeof rehypeKatex);
-console.log("DEBUG: wiki_link_plugin type:", typeof wiki_link_plugin);
-console.log("DEBUG: remarkWikiLinkPkg:", remarkWikiLinkPkg);
+import type { GatsbyConfig } from "gatsby";
+import path from "path";
 
 /**
  * @type {import('gatsby').GatsbyConfig}
  */
-const config = {
+const config: GatsbyConfig = {
   // Path Prefix: Used when deploying to a subdirectory (like GitHub Pages).
   pathPrefix: "/home/jnattila/astro-curriculum",
   siteMetadata: {
@@ -33,14 +25,14 @@ const config = {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `content`,
-        path: `${__dirname}/content`,
+        path: path.resolve(`content`),
       },
     },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
         name: `partials`,
-        path: `${__dirname}/src/components/partials`,
+        path: path.resolve(`src/components/partials`),
       },
     },
     

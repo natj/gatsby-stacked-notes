@@ -1,10 +1,24 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+// Define the shape of the theme context.
+interface ThemeContextType {
+  theme: string | null;
+  toggle_theme: () => void;
+}
 
 // Shared state for application theme (light/dark).
-const ThemeContext = createContext({ theme: 'light', toggle_theme: () => {} });
+// Default values provided to prevent destructuring errors.
+const ThemeContext = createContext<ThemeContextType>({ 
+  theme: 'light', 
+  toggle_theme: () => {} 
+});
 
-export const ThemeProvider = ({ children }) => {
-  const [theme, set_theme] = useState(null); 
+interface ThemeProviderProps {
+  children: ReactNode;
+}
+
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+  const [theme, set_theme] = useState<string | null>(null); 
 
   // useEffect: Runs side-effects (DOM access, APIs) after rendering.
   // Empty dependency array [] means this runs only once on mount.
@@ -46,4 +60,5 @@ export const ThemeProvider = ({ children }) => {
   );
 };
 
+// Hook to consume the theme state.
 export const useTheme = () => useContext(ThemeContext);

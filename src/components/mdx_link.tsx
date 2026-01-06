@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Link, withPrefix } from 'gatsby';
 import { useStack, useNoteIndex } from '../context/stack_context';
 import clsx from 'clsx';
-import make_slug from '../../utils/slugify.mjs';
+import make_slug from '../../utils/slugify';
 
-const MdxLink = ({ href, children }) => {
+interface MdxLinkProps {
+  href: string;
+  children: ReactNode;
+}
+
+const MdxLink: React.FC<MdxLinkProps> = ({ href, children }) => {
   const { stack, set_source_idx } = useStack();
   const idx = useNoteIndex(); 
   
   const is_internal = href && (href.startsWith('/') || href.startsWith('.'));
 
   // Normalize href for comparison with stack paths.
-  const get_clean_path = (raw_href) => {
+  const get_clean_path = (raw_href: string): string => {
     let path = raw_href;
     const prefix = withPrefix('/');
     
@@ -33,7 +38,7 @@ const MdxLink = ({ href, children }) => {
   const clean_target = get_clean_path(href);
   const is_open = is_internal && stack.some(item => item.path === clean_target);
 
-  // Use Gatsby <Link> for internal routes to enable instant, client-side navigation without page reloads.
+  // Use Gatsby <Link> for internal routes to enable instant, client-side navigation.
   if (is_internal) {
     return (
       <Link

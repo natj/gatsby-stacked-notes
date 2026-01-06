@@ -1,16 +1,8 @@
-## Code Comment Guidelines
-
-To maintain code readability and conciseness, please adhere to the following guidelines when adding comments:
-
-1.  **Short and Descriptive:** Comments should be brief but clearly explain the *why* and *what* of the code.
-2.  **Avoid Redundancy:** Do not state the obvious. The code should speak for itself where possible.
-3.  **No Unnecessary Phrases:** Avoid filler phrases such as:
-    *   "This is a simple module for..." (Instead, just "A simple module for...")
-    *   "This function is used to..." (Instead, "Calculates X by doing Y.")
-    *   "Here we are checking for..." (Instead, "Checks for...")
-    *   "The following code does..." (Instead, directly explain what it does.)
-4.  **Focus on Logic:** Explain complex logic, edge cases, or design decisions that are not immediately apparent from the code itself.
-5.  **Maintain React Context (if applicable):** When explaining React components, hooks, or context, briefly describe their purpose and how they integrate into the React lifecycle or component tree.
+## 3. Comments
+- **Goal:** Code must be understandable to a developer unfamiliar with the specific libraries used.
+- **Requirement:** Add concise, descriptive comments to explain **why** logic is implemented a certain way.
+- **React/Gatsby Context:** Always explain React hooks (e.g., `useEffect`, `useContext`), Gatsby lifecycle APIs (e.g., `createPages`), and specific package functionality (e.g., `mdxOptions`). Assume the reader is a generalist programmer, not a framework specialist.
+- **Style:** Avoid filler phrases ("This function..."). Focus on the intent and the architectural role of the code block.
 
 ## Code Style Preferences
 
@@ -27,3 +19,4 @@ Please follow these guidelines for code style:
     - Embrace **ES Modules (ESM)**. Since Gatsby v5 and MDX v2 enforce strict ESM compliance for plugins (like `remark` and `rehype` ecosystem), configuration files (`gatsby-config.js`, `gatsby-node.js`) should eventually be migrated to `.mjs` or refactored to handle ESM imports properly.
     - When adding functionalities (like LaTeX), choose modern, performance-oriented libraries (e.g., `KaTeX` over `MathJax`) and ensure their plugins are compatible with the MDX v2 AST.
 8.  **Verification after Major Revisions:** After significant code changes—such as renaming files, large logic rewrites, or structural updates—always verify compilation and runtime stability. The standard procedure is to execute `npm run clean` followed by `npm run develop` (or `npm run build`) to ensure the cache is purged and the system boots correctly with the new changes.
+9.  **No Emoticons:** Absolutely no emoticons (emojis, smiley faces, etc.) are allowed in the HTML, source code, comments, or any other project files. Maintain a strictly professional and clean text-only environment.

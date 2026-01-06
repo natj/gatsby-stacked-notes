@@ -1,22 +1,23 @@
 import slugify from "slugify";
 import path from "path";
-import make_slug from "./utils/slugify.mjs";
+import make_slug from "./utils/slugify";
+import type { GatsbyNode } from "gatsby";
 
 // API: createResolvers
 // Allows extending the GraphQL schema with custom fields.
 // Here we generate 'backlinks' by scanning all notes for links to the current note.
-export const createResolvers = ({ createResolvers }) => {
+export const createResolvers: GatsbyNode["createResolvers"] = ({ createResolvers }) => {
   const resolvers = {
     Mdx: {
       backlinks: {
         type: ["Mdx"],
-        resolve: async (source, args, context, info) => {
+        resolve: async (source: any, args: any, context: any, info: any) => {
           const notes = await context.nodeModel.findAll({ type: "Mdx" });
           
           // Get current note's slug base (e.g. "my-note").
           const slug_base = source.fields.slug.replace(/^\/|\/$/g, '').split('/').pop();
 
-          return notes.entries.filter((note) => {
+          return notes.entries.filter((note: any) => {
             if (note.id === source.id) return false;
 
             // Skip partials.
@@ -59,12 +60,12 @@ export const createResolvers = ({ createResolvers }) => {
 // API: onCreateNode
 // Called when a new node is created. We attach a 'slug' field to MDX nodes
 // derived from their filename, ensuring consistent URLs.
-export const onCreateNode = ({ node, actions, getNode }) => {
+export const onCreateNode: GatsbyNode["onCreateNode"] = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
 
   if (node.internal.type === "Mdx") {
-    const file_node = getNode(node.parent);
-    const file_name = file_node.name;
+    const file_node = getNode(node.parent!);
+    const file_name = (file_node as any).name;
 
     let slug = "";
     if (file_name === "index") {
@@ -84,7 +85,7 @@ export const onCreateNode = ({ node, actions, getNode }) => {
 // API: createSchemaCustomization
 // Explicitly defines types for GraphQL to ensure consistent queries,
 // even if some data fields (like frontmatter) are missing in files.
-export const createSchemaCustomization = ({ actions }) => {
+export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] = ({ actions }) => {
   const { createTypes } = actions;
   const type_defs = `
     type Mdx implements Node {
