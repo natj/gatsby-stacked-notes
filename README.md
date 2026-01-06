@@ -1,147 +1,115 @@
-# Gatsby Digital Garden Theme
+# Gatsby Stacked-Notes (Digital Garden) Theme
 
-A modern, "Andy Matuschak-style" digital garden starter built with Gatsby v5, MDX, and Tailwind CSS.
+A modern, high-performance "Andy Matuschak-style" digital garden starter built with **Gatsby v5**, **MDX v2**, **React 18**, and **Tailwind CSS**. Entirely migrated to **TypeScript** for robust development.
 
-This theme features a sliding pane layout where notes open side-by-side horizontally. It includes smart navigation (branching history), bi-directional wiki-linking, and automatic backlink generation.
+This theme features a sliding pane layout where notes open side-by-side horizontally. It includes smart navigation (branching history), bi-directional wiki-linking, automatic backlink generation, and full LaTeX support.
 
 ## Features
 
-- Sliding Stack Layout: Pages slide in from the right, creating a visual history of your thought path.
-- Smart Branching: Clicking a link in the middle of the stack "forks" the history, clearing subsequent notes to focus on the new path.
-- Wiki-Link Support: Write standard [[Wiki Links]] that auto-convert to slugs using strict logic.
-- Automatic Backlinks: Every note displays a "Linked to by" section at the bottom, generated at build time.
-- Spine Mode: When notes are stacked, they collapse into a vertical "spine" with rotated text (like books on a shelf).
-- GitHub Pages Ready: Configured for easy deployment to subdirectories using pathPrefix.
+- **Sliding Stack Layout**: Pages slide in from the right, creating a visual history of your thought path.
+- **Smart Branching**: Clicking a link in the middle of the stack "forks" the history, clearing subsequent notes to focus on the new path.
+- **Wiki-Link Support**: Standard `[[Wiki Links]]` auto-convert to slugs using strict normalization logic.
+- **Automatic Backlinks**: Every note displays a "Referred in" section at the bottom, generated at build time.
+- **LaTeX Math Rendering**: Native support for inline `$E=mc^2$` and block `$$E=mc^2$$` math using KaTeX.
+- **Table of Contents (ToC)**: Compact, clickable ToC with customizable recursion depth via frontmatter.
+- **Global Header**: Persistent full-width header containing site-wide navigation and a theme toggle.
+- **Spine Mode**: When notes are stacked, they collapse into a vertical "spine" with rotated titles.
+- **Stack Highlighting**: Links to notes that are already open in the stack are automatically highlighted with a light blue background.
+- **Light/Dark Mode**: Built-in theme context with a persistent toggle centered in the global header.
+- **TypeScript Native**: Full type safety across components, context, and Gatsby configuration.
 
 ## Installation & Setup
 
 ### 1. Initialize
-Since this is a custom theme structure, assume you have the files in place. If starting fresh:
+Clone the repository and install dependencies:
 
 ```bash
 npm install
 ```
 
+### 2. Running Locally
 
-### 2. Key Dependencies
-Ensure your `package.json` includes these core libraries:
-
-```JSON
-
-"dependencies": { "gatsby": "^5.x",
-  "gatsby-plugin-mdx": "^5.x",
-  "gatsby-plugin-layout": "^4.x",
-  "gatsby-plugin-postcss": "^6.x",
-  "react": "^18.x",
-  "react-dom": "^18.x",
-  "remark-wiki-link": "^2.x",
-  "slugify": "^1.x",
-  "tailwindcss": "^3.x"
-}
-```
-
-### 3. Running Locally
-
-```Bash
+```bash
+# Clean cache and start development server
 npm run clean
 npm run develop
 ```
 
-Access the site at http://localhost:8000. Alternatively, you can build and serve with `npm run build` && `npm run serve`.
+Access the site at `http://localhost:8000`.
 
+### 3. Production Build
 
-### File Structure & Description
-Core files powering the "Garden" logic.
+```bash
+npm run build -- --prefix-paths
+npm run serve -- --prefix-paths
+```
+
+## File Structure
+The project is organized into a clean, TypeScript-first structure.
 
 ```Plaintext
-
 /
 ├── content/                      # Markdown/MDX notes.
 ├── src/
 │   ├── components/
-│   │   ├── partials/             # Reusable MDX snippets (Header/Footer).
-│   │   ├── garden_interface.js   # UI entry. Renders sliding NoteCards.
-│   │   ├── mdx_link.js           # Intercepts links for stack navigation.
-│   │   └── theme_toggle.js       # Light/dark mode toggle button.
+│   │   ├── garden_interface.tsx  # Main UI logic for sliding NoteCards.
+│   │   ├── mdx_link.tsx          # Custom link component handling stack navigation.
+│   │   ├── theme_toggle.tsx      # Dark mode toggle button.
+│   │   └── partials/             # Reusable MDX snippets (Header/Footer).
 │   │
 │   ├── context/
-│   │   ├── stack_context.js    # Manages note stack and branching logic.
-│   │   └── theme_context.js    # Manages light/dark theme state.
+│   │   ├── stack_context.tsx     # Manages note stack and branching logic.
+│   │   └── theme_context.tsx     # Manages persistent light/dark theme state.
 │   │
 │   ├── hooks/
-│   │   └── useWindowWidth.js   # Monitors window width for responsive UI.
+│   │   └── useWindowWidth.ts     # Monitors window size for responsive layout.
 │   │
 │   ├── layouts/
-
-│   │   └── index.js              # App wrapper. Syncs Gatsby location with stack.
+│   │   └── index.tsx             # Global layout wrapper (Providers & Header).
 │   │
 │   ├── pages/
-│   │   ├── {mdx.fields__slug}.js # Template for individual notes.
-│   │   └── 404.js                # Custom "Not Found" page.
+│   │   ├── {mdx.fields__slug}.tsx # Dynamic template for individual notes.
+│   │   └── 404.tsx               # Professional "Not Found" page.
 │   │
 │   └── styles/
-│       └── global.css            # Tailwind and custom global styles.
+│       └── global.css            # Centralized CSS variables and component styles.
 │
 ├── utils/
-│   └── slugify.js                # Utility for consistent URL slugs.
+│   └── slugify.ts                # Shared utility for URL-friendly slugs.
 │
-├── gatsby-config.js              # Gatsby plugins and site configuration.
-├── gatsby-node.js                # Custom GraphQL fields (backlinks) and slugs.
-├── postcss.config.js             # PostCSS configuration for Tailwind.
+├── gatsby-config.ts              # Gatsby plugins and site configuration.
+├── gatsby-node.ts                # GraphQL schema customization and backlink logic.
 ├── tailwind.config.js            # Tailwind CSS configuration.
-└── GEMINI.md                     # Project-specific coding and comment style guide.
+└── GEMINI.md                     # Strict coding standards and style guide.
 ```
 
+## Writing Content
 
-### Writing Content
+Add `.md` or `.mdx` files to the `content/` folder.
 
-Add .md or .mdx files to the `content/` folder. Frontmatter is optional but recommended for titles.
+### Frontmatter Options
 
-```Markdown
-
+```markdown
 ---
-title: My Gardening Tips
+title: My Advanced Note
+toc: true        # Enable Table of Contents
+toc_depth: 2     # Limit ToC to H2 sub-sections
+hideHeader: true # Hide the local note header area
+hideFooter: true # Hide the local note footer area
 ---
-
-Here is a paragraph about gardening.
 ```
 
-#### Linking (Wiki Style)
+### Linking
 
-You can link to other notes using double brackets. The system uses the `utils/slugify.js` logic to resolve the filename.
-- [[Watering Plants]] → Links to /watering-plants
-- [[Watering Plants|Click here]] → Links to /watering-plants with text "Click here"
+- **Wiki Style**: `[[Note Title]]` or `[[Note Title|Custom Label]]`
+- **Standard**: `[Link Text](/target-slug)`
 
-Standard Markdown links also work and are intercepted by the stack logic: `[Go to Home](/)`
+Internal links are intercepted to open in the sliding stack. Links to open notes receive an `.is-open` CSS class highlight.
 
-### Deploying to GitHub Pages
 
-If your site is hosted at `username.github.io/repo-name`, you must configure the Path Prefix.
+## TODO
 
-`gatsby-config.js:`
-
-```JavaScript
-
-module.exports = {
-  pathPrefix: "/repo-name", // REPLACE WITH YOUR REPO NAME
-  // ...
-}
-```
-
-You must include the flag when building.
-
-```Bash
-
-npm run build -- --prefix-paths
-```
-
-# TODO
-
-- minimal mistakes -like gallery feature into notes
-- ghost (wiki) links to missing notes are styled with a dark red text to show that they do not exist
-- notes can have "title of content" listing after the title (when toc:true is set in markdown preamble)
-- latex support to md
-- a preview box opens when however above a note link
-
-Tasks pending because gemini failed (too complex):
-- open notes in the stack have their link highlighted with a light blue background
+- **Ghost Links**: Style wiki-links to non-existent notes with dark red text.
+- **Link Previews**: Implement a preview box that appears when hovering over a note link.
+- **Gallery Feature**: Add "Minimal Mistakes" style gallery support for notes.
+- **Search**: Implement site-wide search functionality.
