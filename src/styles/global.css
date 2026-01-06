@@ -169,6 +169,7 @@ body {
   height: 100%; /* Fill the card */
   overflow-y: auto; /* Content scrolls instead of card */
   background-color: var(--color-background);
+  scroll-behavior: smooth;
 }
 
 .note-content::-webkit-scrollbar {
@@ -277,6 +278,58 @@ body {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* --- COMPONENT: Table of Contents --- */
+.toc-container {
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 1rem; /* Reduced vertical padding */
+  background-color: var(--color-accent);
+  border-radius: 0.4rem;
+  border: 1px solid var(--color-gray);
+  display: inline-block; /* Bounding box tight to content */
+  min-width: 240px;
+  max-width: 100%;
+}
+
+.toc-title {
+  font-size: 0.85rem; 
+  font-weight: 700;
+  margin-top: 0 !important; /* Remove any prose heading margins */
+  margin-bottom: 0.3rem; /* Reduced margin */
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1; /* Tighten title height */
+}
+
+.toc-list {
+  list-style-type: disc !important; /* Standard bullets */
+  padding-left: 1.1rem !important; /* Minimal indentation for bullets */
+  margin-bottom: 0 !important;
+}
+
+.toc-list .toc-list {
+  list-style-type: circle !important; /* Nested level style */
+  padding-left: 1rem !important;
+  margin-top: 0.1rem;
+}
+
+.toc-list li {
+  margin-bottom: 0.1rem !important; /* Tight list spacing */
+  line-height: 1.3;
+}
+
+.toc-link {
+  font-size: 0.9rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.toc-link:hover {
+  text-decoration: underline;
+  color: var(--color-text);
 }
 
 

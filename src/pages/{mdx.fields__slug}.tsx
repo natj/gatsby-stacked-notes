@@ -17,6 +17,12 @@ interface Backlink {
   };
 }
 
+interface TOCItem {
+  url: string;
+  title: string;
+  items?: TOCItem[];
+}
+
 interface NotePageProps {
   data: {
     mdx: {
@@ -24,25 +30,56 @@ interface NotePageProps {
         title: string;
         hideHeader: boolean | null;
         hideFooter: boolean | null;
+        toc: boolean | null;
+        toc_depth: number | null;
       };
       fields: {
         slug: string;
       };
       backlinks: Backlink[] | null;
+      tableOfContents: {
+        items?: TOCItem[];
+      };
     };
   };
   children: ReactNode;
 }
 
+const TOCList: React.FC<{ items: TOCItem[]; current_depth: number; max_depth: number }> = ({ items, current_depth, max_depth }) => (
+  <ul className="toc-list">
+    {items.map((item) => (
+      <li key={item.url}>
+        <a href={item.url} className="toc-link">
+          {item.title}
+        </a>
+        {item.items && current_depth < max_depth && (
+          <TOCList items={item.items} current_depth={current_depth + 1} max_depth={max_depth} />
+        )}
+      </li>
+    ))}
+  </ul>
+);
+
 // Page Template: Gatsby automatically creates pages using this component for every MDX file.
 export default function NotePage({ data, children }: NotePageProps) {
-  const { backlinks, frontmatter } = data.mdx;
+  const { backlinks, frontmatter, tableOfContents } = data.mdx;
+
+  // Default to a large depth if not specified.
+  const max_depth = frontmatter.toc_depth || 6;
 
   return (
     <div>
       <MDXProvider components={{ a: MdxLink as any }}>
         
         <h1>{data.mdx.frontmatter.title}</h1>
+
+        {/* Table of Contents: Rendered only if 'toc: true' in frontmatter and items exist. */}
+        {frontmatter.toc && tableOfContents.items && tableOfContents.items.length > 0 && (
+          <div className="toc-container">
+            <h3 className="toc-title">Table of Contents</h3>
+            <TOCList items={tableOfContents.items} current_depth={1} max_depth={max_depth} />
+          </div>
+        )}
 
         {/* Render the main body of the note. */}
         {children}
@@ -89,11 +126,14 @@ export const query = graphql`
         title
         hideHeader
         hideFooter
+        toc
+        toc_depth
       }
       fields {
         slug
       }
-      # Fetch all notes that link TO this note (generated in gatsby-node.ts).
+      tableOfContents
+      # Fetch all notes that link TO this note (generated in gatsby-node.js).
       backlinks {
         id
         excerpt(pruneLength: 80)

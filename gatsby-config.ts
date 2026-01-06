@@ -3,6 +3,7 @@ const wiki_link_plugin = remarkWikiLinkPkg;
 import make_slug from "./utils/slugify";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
+import rehypeSlug from "rehype-slug";
 import type { GatsbyConfig } from "gatsby";
 import path from "path";
 
@@ -54,7 +55,7 @@ const config: GatsbyConfig = {
               },
             ],
           ],
-          rehypePlugins: [rehypeKatex],
+          rehypePlugins: [rehypeKatex, rehypeSlug],
         },
       },
     },

@@ -95,6 +95,8 @@ export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] 
       hideHeader: Boolean
       hideFooter: Boolean
       title: String
+      toc: Boolean
+      toc_depth: Int
     }
   `;
   createTypes(type_defs);
